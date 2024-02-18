@@ -1,34 +1,36 @@
 'use server'
-
+import { FormAuthSchema } from '@/lib/types'
 import { z } from 'zod'
-import { FormHomeSchema } from '../lib/types'
 
-type Inputs = z.infer<typeof FormHomeSchema>
+type Inputs = z.infer<typeof FormAuthSchema>
 
-export const createShortUrl = async (data: Inputs) => {
-  const result = FormHomeSchema.safeParse(data)
+export const signUpUser = async (data: Inputs) => {
+  const result = FormAuthSchema.safeParse(data)
 
   if (result.success) {
     const response = await fetch(
-      'https://links-short-api.onrender.com/links/create-link-all-users',
+      'https://links-short-api.onrender.com/auth/register',
       {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ urlOriginal: result.data.url })
+        body: JSON.stringify({
+          email: result.data.email,
+          password: result.data.password
+        })
       }
     )
     const data = await response.json()
 
-    if (data.url_short) {
+    if (data.email) {
       return {
-        data,
+        email: data.email,
         error: null
       }
     } else {
       return {
-        data: null,
+        email: null,
         error: data.message
       }
     }
