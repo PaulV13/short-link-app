@@ -10,7 +10,7 @@ export const createShortUrl = async (data: Inputs) => {
 
   if (result.success) {
     const response = await fetch(
-      'https://links-short-api.onrender.com/links/create-link-all-users',
+      `${process.env.NEXT_PUBLIC_BASE_URL}/links/create-link-all-users`,
       {
         method: 'POST',
         headers: {

@@ -1,13 +1,17 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { MyJwtPayload, UserType } from '../lib/types'
+import { MyJwtPayload } from '../lib/types'
+import { useLinkStore, useUserStore } from '@/store/store'
 import Link from 'next/link'
 import jwt from 'jsonwebtoken'
 
 export default function Navbar() {
+  const user = useUserStore((state) => state.user)
+  const loginUserStore = useUserStore((state) => state.loginUserStore)
+  const logoutUserStore = useUserStore((state) => state.logoutUserStore)
+  const setErrorMessage = useLinkStore((state) => state.setErrorMessage)
   const [token, setToken] = useState<string | null>(null)
-  const [user, setUser] = useState<UserType | null>(null)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -20,16 +24,18 @@ export default function Navbar() {
 
       if (payload) {
         const user = payload as MyJwtPayload
-        setUser({ sub: Number(user.sub), email: user.email })
+
+        loginUserStore({ sub: Number(user.sub), email: user.email })
       }
     }
     setLoading(false)
-  }, [token])
+  }, [token, loginUserStore])
 
   const handleLogout = () => {
     localStorage.removeItem('accessToken')
     setToken(null)
-    setUser(null)
+    logoutUserStore()
+    setErrorMessage(null)
   }
 
   return (

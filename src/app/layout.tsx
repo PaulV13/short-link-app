@@ -6,12 +6,12 @@ import './globals.css'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'Acortador de url largas',
-  description: 'Acorta tus urls largas y compartilas en tus redes sociales',
+  title: 'Shortener URL',
+  description: 'Shorten you urls and share in your social media'
 }
 
 export default function RootLayout({
-  children,
+  children
 }: Readonly<{
   children: ReactNode
 }>) {

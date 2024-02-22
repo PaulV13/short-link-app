@@ -9,7 +9,7 @@ export const signUpUser = async (data: Inputs) => {
 
   if (result.success) {
     const response = await fetch(
-      'https://links-short-api.onrender.com/auth/register',
+      `${process.env.NEXT_PUBLIC_BASE_URL}/auth/register`,
       {
         method: 'POST',
         headers: {

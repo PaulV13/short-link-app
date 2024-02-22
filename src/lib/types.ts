@@ -37,5 +37,11 @@ export const FormAuthSchema = z.object({
 export const FormHomeSchema = z.object({
   url: z.string().min(1, { message: 'Url is required' }).url({
     message: 'Invalid Url'
-  })
+  }),
+  code: z
+    .string()
+    .min(6, 'Must be 6 or more characters long')
+    .refine((c) => !c.includes(' '), 'Invalid code, not include spaces')
+    .optional()
+    .or(z.literal(''))
 })

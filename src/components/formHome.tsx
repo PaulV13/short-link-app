@@ -1,20 +1,23 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { createShortUrl } from '@/actions/create-link-action'
 import { FormHomeSchema } from '@/lib/types'
-import Link from 'next/link'
-import Button from './button'
 import { createShortUrlAuth } from '@/actions/create-link-auth-action'
+import { useLinkStore, useUserStore } from '@/store/store'
+import Button from './button'
 
 type Inputs = z.infer<typeof FormHomeSchema>
 
 export default function FormHome() {
-  const [urlShort, setUrlShort] = useState(null)
-  const [errorMessage, setErrorMessage] = useState<string | null>(null)
+  const user = useUserStore((state) => state.user)
+
+  const setErrorMessage = useLinkStore((state) => state.setErrorMessage)
+  const setUrlShort = useLinkStore((state) => state.setUrlShort)
+
   const [pending, setPending] = useState(false)
 
   const {
@@ -26,6 +29,13 @@ export default function FormHome() {
     resolver: zodResolver(FormHomeSchema)
   })
 
+  useEffect(() => {
+    if (user === null) {
+      reset()
+      setUrlShort(null)
+    }
+  }, [user, reset, setUrlShort])
+
   const processForm: SubmitHandler<Inputs> = async (data) => {
     setPending(true)
 
@@ -35,53 +45,44 @@ export default function FormHome() {
       ? await createShortUrlAuth(data, token)
       : await createShortUrl(data)
 
-    if (result?.data.url_short) {
-      reset()
-      setUrlShort(result.data.url_short)
-      setErrorMessage('')
-    }
-
-    if (result?.error) {
+    if (result?.data === null) {
       setErrorMessage(result?.error)
+    } else {
+      reset()
+      setUrlShort(result?.data.url_short)
+      setErrorMessage('')
     }
     setPending(false)
   }
 
   return (
-    <>
-      <form
-        onSubmit={handleSubmit(processForm)}
-        className="m-auto max-w-[512px]"
-      >
-        <label htmlFor="url" className="text-lg">
-          Shorten a long URL
-        </label>
-        <input
-          id="url"
-          type="text"
-          {...register('url')}
-          placeholder="Example: https://www.example.com/long-url"
-          className="w-full p-2 my-2 text-black rounded"
-        />
-        {errors.url?.message ? (
-          <p className="text-sm text-red-400">{errors.url.message}</p>
-        ) : null}
-        <Button pending={pending} />
-      </form>
-      <section className="text-lg text-center">
-        {urlShort ? (
-          <p>
-            Short url:{' '}
-            <Link
-              href={`https://links-short-api.onrender.com/links/${urlShort}`}
-              className="underline"
-            >
-              https://links-short-api.onrender.com/links/{urlShort}
-            </Link>
-          </p>
-        ) : null}
-        {errorMessage ? <p className="text-red-400">{errorMessage}</p> : null}
-      </section>
-    </>
+    <form
+      onSubmit={handleSubmit(processForm)}
+      className="flex flex-col gap-4 w-full max-w-2xl"
+    >
+      <input
+        id="url"
+        type="text"
+        {...register('url')}
+        placeholder="Enter long url here"
+        className="w-full p-2 my-2 text-black rounded focus:outline-none focus:outline-2 focus:outline-blue-500"
+      />
+      {errors.url?.message ? (
+        <p className="text-sm text-red-400">{errors.url.message}</p>
+      ) : null}
+      <input
+        id="code"
+        type="text"
+        {...register('code')}
+        placeholder="Optional: Enter alias"
+        className="w-full p-2 my-2 text-black rounded focus:outline-none focus:outline-2 focus:outline-blue-500"
+        disabled={user === null}
+      />
+      {errors.code?.message ? (
+        <p className="text-sm text-red-400">{errors.code.message}</p>
+      ) : null}
+
+      <Button pending={pending} />
+    </form>
   )
 }

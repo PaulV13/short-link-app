@@ -10,7 +10,7 @@ export const createShortUrlAuth = async (data: Inputs, token: string) => {
 
   if (result.success) {
     const response = await fetch(
-      'https://links-short-api.onrender.com/links/create-link-users-auth',
+      `${process.env.NEXT_PUBLIC_BASE_URL}/links/create-link-users-auth${result.data.code ? `?code=${result.data.code.trim()}` : '/'}`,
       {
         method: 'POST',
         headers: {
