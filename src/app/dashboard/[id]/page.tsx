@@ -55,9 +55,14 @@ export default function Dashboard() {
 
   if (links && links.length === 0) {
     return (
-      <section>
-        <p>No hay links</p>
-        <button onClick={handleCreateLink}>Crear link</button>
+      <section className="flex flex-col w-screen h-screen justify-center items-center gap-4">
+        <p className="text-xl">You dont have links</p>
+        <button
+          className="text-black py-1 px-2 bg-blue-200 hover:bg-blue-300 rounded-md"
+          onClick={handleCreateLink}
+        >
+          Create link
+        </button>
       </section>
     )
   }

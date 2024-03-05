@@ -37,15 +37,20 @@ export default function Home() {
         <section className="w-full max-w-md">
           {urlShort ? (
             <section className="flex flex-col gap-2 items-center bg-gray-200 border-4 border-blue-500 rounded text-gray-900 p-4">
-              <p>Short URL</p>
-              <Link
-                href={`${process.env.NEXT_PUBLIC_BASE_URL}/links/${urlShort}`}
-                className="underline"
-                target="_blank"
+              <div className="flex gap-2">
+                <p className="text-md font-bold">Short URL:</p>
+                <Link
+                  href={`${process.env.NEXT_PUBLIC_BASE_URL}/links/${urlShort}`}
+                  className="underline"
+                  target="_blank"
+                >
+                  {process.env.NEXT_PUBLIC_BASE_URL}/links/{urlShort}
+                </Link>
+              </div>
+              <div
+                className="flex gap-2 cursor-pointer bg-blue-200 hover:bg-blue-300 py-2 px-4 rounded"
+                onClick={copyToClipboard}
               >
-                {process.env.NEXT_PUBLIC_BASE_URL}/links/{urlShort}
-              </Link>
-              <div className="cursor-pointer" onClick={copyToClipboard}>
                 <svg
                   className="icon icon-tabler icon-tabler-copy"
                   width="24"
@@ -61,6 +66,7 @@ export default function Home() {
                   <path d="M7 7m0 2.667a2.667 2.667 0 0 1 2.667 -2.667h8.666a2.667 2.667 0 0 1 2.667 2.667v8.666a2.667 2.667 0 0 1 -2.667 2.667h-8.666a2.667 2.667 0 0 1 -2.667 -2.667z" />
                   <path d="M4.012 16.737a2.005 2.005 0 0 1 -1.012 -1.737v-10c0 -1.1 .9 -2 2 -2h10c.75 0 1.158 .385 1.5 1" />
                 </svg>
+                <p>Copy to clipboard</p>
               </div>
             </section>
           ) : null}
