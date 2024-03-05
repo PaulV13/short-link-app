@@ -27,6 +27,7 @@ export const loginUser = async (data: Inputs) => {
       if (data.accessToken) {
         return {
           accessToken: data.accessToken,
+          refreshToken: data.refreshToken,
           error: null
         }
       } else {
@@ -44,7 +45,6 @@ export const loginUser = async (data: Inputs) => {
       }
     }
   } catch (error) {
-    console.error('Error:', error)
     return {
       success: false,
       error: 'An error occurred'

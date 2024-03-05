@@ -46,6 +46,7 @@ export default function FormAuth({ toggle }: { toggle: FormType }) {
         reset()
         setErrorMessage('')
         localStorage.setItem('accessToken', result?.accessToken)
+        localStorage.setItem('refreshToken', result?.refreshToken)
         router.push('/')
       }
       if (result?.error) {

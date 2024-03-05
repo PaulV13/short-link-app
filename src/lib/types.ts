@@ -11,6 +11,24 @@ export type LinkType = {
   userId: string | null
 }
 
+export type CountryType = {
+  id: number
+  name: string
+}
+
+export type CountriesType = {
+  country: CountryType
+  visits: number
+}
+
+export type LinkUserType = {
+  id: number
+  url_original: string
+  url_short: string
+  visits: number
+  countries: CountriesType[]
+}
+
 export type UserType = {
   sub: number
   email: string

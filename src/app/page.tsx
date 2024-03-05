@@ -29,9 +29,9 @@ export default function Home() {
       <Navbar />
       <main className="flex flex-col justify-between gap-8 p-8 w-1/2 items-center">
         <h1 className="text-4xl font-bold mb-8">Shorten a long URL</h1>
-        <h2 className="text-lg font-bold mb-4 text-blue-400">
-          Login to create your short link with custom alias and see the number
-          of visits of your links.
+        <h2 className="text-xl font-bold mb-4 text-blue-200">
+          Login to create your short link with custom alias and see the
+          countries with the number of visits of your links.
         </h2>
         <FormHome />
         <section className="w-full max-w-md">

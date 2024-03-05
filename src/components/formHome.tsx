@@ -9,8 +9,23 @@ import { FormHomeSchema } from '@/lib/types'
 import { createShortUrlAuth } from '@/actions/create-link-auth-action'
 import { useLinkStore, useUserStore } from '@/store/store'
 import Button from './button'
+import jwt from 'jsonwebtoken'
+import { refreshTokenAction } from '@/actions/refresh-token'
 
 type Inputs = z.infer<typeof FormHomeSchema>
+
+const isTokenExpired = (token: string | null) => {
+  if (token === null) return true
+
+  const payload = jwt.decode(token)
+
+  if (typeof payload === 'string' || payload === null) return false
+
+  const { exp } = payload
+  if (exp === undefined) return false
+
+  return Date.now() >= exp * 1000
+}
 
 export default function FormHome() {
   const user = useUserStore((state) => state.user)
@@ -39,7 +54,16 @@ export default function FormHome() {
   const processForm: SubmitHandler<Inputs> = async (data) => {
     setPending(true)
 
-    const token = localStorage.getItem('accessToken')
+    let token = localStorage.getItem('accessToken')
+    const refreshToken = localStorage.getItem('refreshToken')
+
+    if (isTokenExpired(token)) {
+      if (refreshToken) {
+        const { acccessToken } = await refreshTokenAction(refreshToken)
+        localStorage.setItem('accessToken', acccessToken)
+        token = acccessToken
+      }
+    }
 
     const result = token
       ? await createShortUrlAuth(data, token)

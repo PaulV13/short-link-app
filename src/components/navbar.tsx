@@ -11,15 +11,12 @@ export default function Navbar() {
   const loginUserStore = useUserStore((state) => state.loginUserStore)
   const logoutUserStore = useUserStore((state) => state.logoutUserStore)
   const setErrorMessage = useLinkStore((state) => state.setErrorMessage)
-  const [token, setToken] = useState<string | null>(null)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     const token = localStorage.getItem('accessToken')
 
     if (token) {
-      setToken(token)
-
       const payload = jwt.decode(token)
 
       if (payload) {
@@ -29,11 +26,11 @@ export default function Navbar() {
       }
     }
     setLoading(false)
-  }, [token, loginUserStore])
+  }, [loginUserStore])
 
   const handleLogout = () => {
     localStorage.removeItem('accessToken')
-    setToken(null)
+    localStorage.removeItem('refreshToken')
     logoutUserStore()
     setErrorMessage(null)
   }
@@ -47,8 +44,16 @@ export default function Navbar() {
         </div>
       ) : (
         <ul className="flex space-x-4">
-          {token ? (
+          {user ? (
             <>
+              <li>
+                <Link
+                  href={`/dashboard/${user?.sub}`}
+                  className="hover:underline"
+                >
+                  Dashboard
+                </Link>
+              </li>
               <li>{user?.email}</li>
               <li>
                 <Link
