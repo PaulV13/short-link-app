@@ -16,6 +16,7 @@ export default function Dashboard() {
   const [selectedLink, setSelectedLink] = useState<LinkUserType | null>(null)
   const router = useRouter()
   const [itemSelected, setItemSelected] = useState(0)
+  const [loading, setLoading] = useState(true)
 
   const handleLinkClick = (link: LinkUserType) => {
     setItemSelected(link.id)
@@ -41,20 +42,37 @@ export default function Dashboard() {
             const newResponse = await getLinks(id, acccessToken)
             if (newResponse.error) {
               setError(newResponse.error)
+              setLoading(false)
               return
             }
 
             setLinks(newResponse.data)
+            setLoading(false)
             return
           }
         }
         setLinks(response.data)
+        setLoading(false)
       }
       fetchData()
     } else {
       router.push('/')
     }
   }, [id, router])
+
+  if (loading)
+    return (
+      <div className="w-full h-full flex justify-center items-center">
+        <div
+          className="inline-block h-8 w-8 animate-spin text-blue-400 rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] text-primary motion-reduce:animate-[spin_1.5s_linear_infinite]"
+          role="status"
+        >
+          <span className="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]">
+            Loading...
+          </span>
+        </div>
+      </div>
+    )
 
   if (error) return <div>{error}</div>
 
