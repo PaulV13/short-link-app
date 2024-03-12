@@ -58,8 +58,8 @@ export default function FormHome() {
     const refreshToken = localStorage.getItem('refreshToken')
 
     if (isTokenExpired(token)) {
-      if (refreshToken) {
-        const { acccessToken } = await refreshTokenAction(refreshToken)
+      if (refreshToken && token) {
+        const { acccessToken } = await refreshTokenAction(refreshToken, token)
         localStorage.setItem('accessToken', acccessToken)
         token = acccessToken
       }
