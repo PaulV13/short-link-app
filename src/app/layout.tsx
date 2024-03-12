@@ -7,10 +7,7 @@ const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
   title: 'Shortener URL',
-  description: 'Shorten you urls and share in your social media',
-  icons: {
-    icon: '/favicon-32x32.png'
-  }
+  description: 'Shorten you urls and share in your social media'
 }
 
 export default function RootLayout({
@@ -20,6 +17,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <link rel="icon" href="/favicon-32x32.png" sizes="any" />
       <body className={inter.className}>{children}</body>
     </html>
   )
