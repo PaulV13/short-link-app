@@ -37,7 +37,7 @@ export default function Navbar() {
 
   return (
     <nav className="flex items-center justify-between w-full px-32 py-4 bg-gray-950 text-white">
-      <h1 className="text-3xl font-bold">LOGO</h1>
+      <h1 className="text-3xl font-bold">VIDURL</h1>
       {loading ? (
         <div className="flex space-x-4">
           <div className="w-28 h-6 bg-gray-700 animate-pulse rounded"></div>

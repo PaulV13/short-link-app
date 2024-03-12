@@ -1,6 +1,9 @@
-export const refreshTokenAction = async (refreshtoken: string) => {
-  const token = localStorage.getItem('accessToken')
+'use server'
 
+export const refreshTokenAction = async (
+  refreshtoken: string,
+  token: string
+) => {
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_BASE_URL}/auth/refresh`,
     {

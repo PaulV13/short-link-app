@@ -15,7 +15,10 @@ export default function Dashboard() {
   const [error, setError] = useState<string | null>(null)
   const [selectedLink, setSelectedLink] = useState<LinkUserType | null>(null)
   const router = useRouter()
+  const [itemSelected, setItemSelected] = useState(0)
+
   const handleLinkClick = (link: LinkUserType) => {
+    setItemSelected(link.id)
     setSelectedLink(link)
   }
 
@@ -32,7 +35,7 @@ export default function Dashboard() {
         const response = await getLinks(id, token)
 
         if (response.error) {
-          const { acccessToken } = await refreshTokenAction(refreshToken)
+          const { acccessToken } = await refreshTokenAction(refreshToken, token)
           localStorage.setItem('accessToken', acccessToken)
           if (acccessToken) {
             const newResponse = await getLinks(id, acccessToken)
@@ -48,15 +51,17 @@ export default function Dashboard() {
         setLinks(response.data)
       }
       fetchData()
+    } else {
+      router.push('/')
     }
-  }, [id])
+  }, [id, router])
 
   if (error) return <div>{error}</div>
 
   if (links && links.length === 0) {
     return (
       <section className="flex flex-col w-screen h-screen justify-center items-center gap-4">
-        <p className="text-xl">You dont have links</p>
+        <p className="text-xl">You have not created any links</p>
         <button
           className="text-black py-1 px-2 bg-blue-200 hover:bg-blue-300 rounded-md"
           onClick={handleCreateLink}
@@ -83,7 +88,7 @@ export default function Dashboard() {
               {links?.map((link) => (
                 <section
                   key={link.id}
-                  className="w-full cursor-pointer"
+                  className={`w-full cursor-pointer ${itemSelected === link.id ? 'bg-blue-200' : 'bg-white'} rounded-md p-2 hover:bg-blue-200 transition-all duration-300 ease-in-out`}
                   onClick={() => handleLinkClick(link)}
                 >
                   <div>

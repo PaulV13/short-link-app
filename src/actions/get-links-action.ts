@@ -1,3 +1,5 @@
+'use server'
+
 export const getLinks = async (id: string, token: string) => {
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_BASE_URL}/links/user/${id}`,

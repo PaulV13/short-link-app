@@ -33,6 +33,12 @@ export default function FormAuth({ toggle }: { toggle: FormType }) {
       if (result?.email) {
         reset()
         setErrorMessage('')
+        const result = await loginUser(data)
+        if (result?.accessToken) {
+          localStorage.setItem('accessToken', result?.accessToken)
+          localStorage.setItem('refreshToken', result?.refreshToken)
+          router.push('/')
+        }
       }
       if (result?.error) {
         setErrorMessage(result?.error)
