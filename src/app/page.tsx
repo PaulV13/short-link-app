@@ -27,7 +27,7 @@ export default function Home() {
   return (
     <>
       <Navbar />
-      <main className="flex flex-col justify-between gap-8 p-8 w-1/2 items-center">
+      <main className="flex flex-col  justify-between gap-8 p-4 w-full md:w-1/2 xl:w-1/3 items-center">
         <h1 className="text-4xl font-bold mb-8">Shorten a long URL</h1>
         <h2 className="text-xl font-bold mb-4 text-blue-200">
           Login to create your short link with custom alias and see the
@@ -37,7 +37,7 @@ export default function Home() {
         <section className="w-full max-w-md">
           {urlShort ? (
             <section className="flex flex-col gap-2 items-center bg-gray-200 border-4 border-blue-500 rounded text-gray-900 p-4">
-              <div className="flex gap-2">
+              <div className="flex flex-col md:flex-row gap-2">
                 <p className="text-md font-bold">Short URL:</p>
                 <Link
                   href={`${process.env.NEXT_PUBLIC_BASE_URL}/links/${urlShort}`}

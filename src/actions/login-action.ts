@@ -48,7 +48,7 @@ export const loginUser = async (data: Inputs) => {
   } catch (error) {
     return {
       success: false,
-      error: 'An error occurred'
+      error: "Error: Can't connect to server. Please try again later."
     }
   }
 }

@@ -93,12 +93,15 @@ export default function Dashboard() {
   if (links) {
     return (
       <>
-        <div className="container mx-auto flex flex-col gap-12">
-          <h1 className="mt-12 text-3xl">Links</h1>
+        <div className="container mx-auto flex flex-col gap-12 p-2">
+          <div className="flex justify-center md:justify-start">
+            <h1 className="mt-12 text-3xl">Links</h1>
+          </div>
+
           <section className="w-full grid grid-cols-1 grid-rows-2 lg:grid-cols-3 lg:grid-rows-1 gap-2">
             <section className="flex flex-col row-start-2 row-end-3 lg:row-start-1 lg:row-end-2 h-[50vh] lg:h-[70vh] gap-2 text-[9px] text-black bg-white rounded-md md:text-base items-center p-4">
               <button
-                className="text-[12px] py-1 px-2 bg-blue-200 hover:bg-blue-300 rounded-md self-end"
+                className="text-[12px] py-1 px-2 font-semibold bg-blue-200 hover:bg-blue-300 rounded-md self-end"
                 onClick={handleCreateLink}
               >
                 Create link
@@ -120,7 +123,9 @@ export default function Dashboard() {
                       {link.url_short}
                     </Link>
                   </div>
-                  <div className="flex gap-2 justify-end text-gray-400 text-[12px]">
+                  <div
+                    className={`flex gap-2 justify-end ${itemSelected === link.id ? 'text-black' : 'text-gray-400'}  text-[12px]`}
+                  >
                     <p>{link.visits}</p>
                     <p>{link.visits === 1 ? 'Visit' : 'Visits'}</p>
                   </div>
