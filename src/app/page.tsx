@@ -34,7 +34,7 @@ export default function Home() {
           countries with the number of visits of your links.
         </h2>
         <FormHome />
-        <section className="w-full max-w-md">
+        <section className="w-full">
           {urlShort ? (
             <section className="flex flex-col gap-2 items-center bg-gray-200 border-4 border-blue-500 rounded text-gray-900 p-4">
               <div className="flex flex-col md:flex-row gap-2">
